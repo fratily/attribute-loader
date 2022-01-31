@@ -11,3 +11,6 @@ parameters:
         -
             message: '#Method Fratily\\AttributeLoader\\AttributeLoader::load\(\) has parameter \$reflection with generic class ReflectionClass but does not specify its types: T#'
             path: src/AttributeLoader.php
+        -
+            message: '#Dynamic call to static method PHPUnit\\Framework\\Assert::.+#'
+            path: tests
