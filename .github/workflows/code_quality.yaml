@@ -1,0 +1,93 @@
+name: "Code Quality"
+
+on:
+  pull_request:
+    paths:
+      - src
+      - tests
+      - composer.json
+      - phpcs.xml.dist
+      - phpstan.neon.dist
+      - phpunit.xml.dist
+  push:
+    branches:
+      - master
+
+jobs:
+  test:
+    name: "Test"
+    runs-on: ${{ matrix.operating-system }}
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ "8.0", "8.1" ]
+        operating-system: [ ubuntu-latest, windows-latest ]
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+
+      - name: "Install"
+        run: "composer install --no-interaction --no-progress"
+
+      - name: "Test"
+        run: "composer test"
+
+  format:
+    name: "Format"
+    runs-on: ${{ matrix.operating-system }}
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ "8.0", "8.1" ]
+        operating-system: [ ubuntu-latest, windows-latest ]
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+
+      - name: "Install"
+        run: "composer install --no-interaction --no-progress"
+
+      - name: "Format"
+        run: "composer format"
+
+  lint:
+    name: "Lint"
+    runs-on: ${{ matrix.operating-system }}
+    timeout-minutes: 60
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ "8.0", "8.1" ]
+        operating-system: [ ubuntu-latest, windows-latest ]
+
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v2"
+
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "${{ matrix.php-version }}"
+
+      - name: "Install"
+        run: "composer install --no-interaction --no-progress"
+
+      - name: "Lint"
+        run: "composer lint"
