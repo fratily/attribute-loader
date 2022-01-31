@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Fratily\AttributeLoader;
@@ -66,6 +67,7 @@ class AttributeLoader
         $this->allowSubClasses = $allowSubClasses;
     }
 
+    // phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * Returns an instance of the attribute attached to reflection.
      *
@@ -74,6 +76,7 @@ class AttributeLoader
      *
      * @phpstan-return list<T>
      */
+    // phpcs:enable Generic.Files.LineLength.TooLong
     public function load(
         ReflectionClass
         | ReflectionClassConstant

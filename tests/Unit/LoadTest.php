@@ -1,9 +1,12 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Fratily\Tests\AttributeLoader\Unit;
 
+// phpcs:disable -- PSR1.Files.SideEffects.FoundWithSymbols
 include __DIR__ . '/load_test_helper.php';
+// phpcs:enable
 
 use Error;
 use Fratily\AttributeLoader\AttributeLoader;
@@ -16,7 +19,7 @@ use ReflectionFunction;
 
 class LoadTest extends TestCase
 {
-    public function test_subclassWillNotBeDetectedIfAllowSubClassIsNone(): void
+    public function testSubclassWillNotBeDetectedIfAllowSubClassIsNone(): void
     {
         $attributes = (new AttributeLoader(FooAttribute::class))->load(
             new ReflectionFunction('func_baz_and_foo_attribute')
@@ -26,7 +29,7 @@ class LoadTest extends TestCase
         $this->assertSame(FooAttribute::class, get_class($attributes[0]));
     }
 
-    public function test_subclassWillNotBeDetectedIfAllowSubClassIsFalse(): void
+    public function testSubclassWillNotBeDetectedIfAllowSubClassIsFalse(): void
     {
         $attributes = (new AttributeLoader(FooAttribute::class, null, false))->load(
             new ReflectionFunction('func_baz_and_foo_attribute')
@@ -36,7 +39,7 @@ class LoadTest extends TestCase
         $this->assertSame(FooAttribute::class, get_class($attributes[0]));
     }
 
-    public function test_subclassWillBeDetectedIfAllowSubClassIsTrue(): void
+    public function testSubclassWillBeDetectedIfAllowSubClassIsTrue(): void
     {
         $attributes = (new AttributeLoader(FooAttribute::class, null, true))->load(
             new ReflectionFunction('func_baz_and_foo_attribute')
@@ -48,11 +51,11 @@ class LoadTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider_invalidBuilder
+     * @dataProvider dataProviderInvalidBuilder
      * @phpstan-param callable(\ReflectionAttribute<FooAttribute>):FooAttribute $builder
      * @phpstan-param class-string<\Throwable> $exception
      */
-    public function test_invalidBuilder(
+    public function testInvalidBuilder(
         callable $builder,
         bool $allow_sub_class,
         string $exception,
@@ -65,10 +68,12 @@ class LoadTest extends TestCase
             new ReflectionFunction('func_foo_attribute')
         );
     }
+    // phpcs:disable Generic.Files.LineLength.TooLong
     /**
      * @phpstan-return array<string,array{callable(\ReflectionAttribute<\Attribute>):mixed,bool,class-string<\Throwable>,string}>
      */
-    public function dataProvider_invalidBuilder(): array
+    // phpcs:enable Generic.Files.LineLength.TooLong
+    public function dataProviderInvalidBuilder(): array
     {
         return [
             'returned not object' => [
@@ -82,13 +87,15 @@ class LoadTest extends TestCase
                 fn() => new BazAttribute(),
                 true,
                 LogicException::class,
+                // phpcs:disable Generic.Files.LineLength.TooLong
                 'The builder must return an instance of the specified attribute class.'
                 . ' Expected instance of ' . FooAttribute::class . ', but instance of ' . BazAttribute::class . ' was returned.'
+                // phpcs:enable Generic.Files.LineLength.TooLong
             ],
         ];
     }
 
-    public function test_notAttributeClassCannotMakeInstanceIfWithoutBuilder(): void
+    public function testNotAttributeClassCannotMakeInstanceIfWithoutBuilder(): void
     {
         $this->expectException(Error::class);
         $this->expectExceptionMessage(
@@ -100,7 +107,7 @@ class LoadTest extends TestCase
         );
     }
 
-    public function test_notAttributeClassCanMakeInstanceIfWithBuilder(): void
+    public function testNotAttributeClassCanMakeInstanceIfWithBuilder(): void
     {
         $attributes = (new AttributeLoader(FooAttribute::class, fn() => new BarNotAttribute(), true))->load(
             new ReflectionFunction('func_bar_not_attribute')

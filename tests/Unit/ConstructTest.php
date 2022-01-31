@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Fratily\Tests\AttributeLoader\Unit;
@@ -11,13 +12,13 @@ use PHPUnit\Framework\TestCase;
 class ConstructTest extends TestCase
 {
     /**
-     * @dataProvider dataProvider_invalidParameters
+     * @dataProvider dataProviderInvalidParameters
      *
      * @template T of object
      * @phpstan-param class-string<T> $attributeClass
      * @phpstan-param (callable(\ReflectionAttribute<T>):T)|null $attributeInstanceBuilder
      */
-    public function test_invalidParameters(
+    public function testInvalidParameters(
         string $exceptionMessage,
         string $attributeClass,
         callable|null $attributeInstanceBuilder,
@@ -32,7 +33,7 @@ class ConstructTest extends TestCase
     /**
      * @phpstan-return array<string,array{string,class-string,callable|null,bool}>
      */
-    public function dataProvider_invalidParameters(): array
+    public function dataProviderInvalidParameters(): array
     {
         /** @phpstan-var class-string */
         $not_exists_class = 'not_exists_class';
