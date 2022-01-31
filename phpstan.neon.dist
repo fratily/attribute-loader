@@ -8,3 +8,6 @@ parameters:
         - tests
     level: max
     ignoreErrors:
+        -
+            message: '#Method Fratily\\AttributeLoader\\AttributeLoader::load\(\) has parameter \$reflection with generic class ReflectionClass but does not specify its types: T#'
+            path: src/AttributeLoader.php
