@@ -11,7 +11,7 @@ on:
       - phpunit.xml.dist
   push:
     branches:
-      - master
+      - main
 
 jobs:
   test:
